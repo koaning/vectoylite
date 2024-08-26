@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "vectolite"
+  site-url: "https://koaning.github.io/vectolite"
+  description: "Utility/Quickstart for sqlite-vec."
+  repo-branch: main
+  repo-url: "https://github.com/koaning/vectolite"
