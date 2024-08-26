@@ -13,4 +13,5 @@ d = { 'settings': { 'branch': 'main',
                                 'vectolite.core.VectoLite.query': ('core.html#vectolite.query', 'vectolite/core.py'),
                                 'vectolite.core.VectoLite.query_idx': ('core.html#vectolite.query_idx', 'vectolite/core.py'),
                                 'vectolite.core.VectoLite.table_exists': ('core.html#vectolite.table_exists', 'vectolite/core.py'),
-                                'vectolite.core.VectoLite.table_len': ('core.html#vectolite.table_len', 'vectolite/core.py')}}}
+                                'vectolite.core.VectoLite.table_len': ('core.html#vectolite.table_len', 'vectolite/core.py'),
+                                'vectolite.core.serialize_f32': ('core.html#serialize_f32', 'vectolite/core.py')}}}
