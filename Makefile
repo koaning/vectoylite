@@ -1,4 +1,5 @@
 commit:
+	python -m pip install --upgrade nbdev
 	nbdev_clean
 	nbdev_export
 	git add .
