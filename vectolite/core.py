@@ -31,8 +31,10 @@ class VectoLite:
         """
         Initializes the VectoLite instance with a connection to the SQLite database.
 
-        Args:
-            path (str): The path to the SQLite database file.
+        Parameters
+        ----------
+            path 
+                The path to the SQLite database file.
         """
         self.path = path
         self.db = pysqlite3.connect(f'{path}.sqlite')
