@@ -1,5 +1,9 @@
 commit:
 	nbdev_clean
+	nbdev_export
 	git add .
 	git commit -m "Added more stuff"
-	git push origin
+
+install:
+	python -m pip install -e . nbdev
+	nbdev_install_hooks
