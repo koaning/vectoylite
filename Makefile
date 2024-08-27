@@ -5,4 +5,5 @@ commit:
 	git commit -m "Added more stuff"
 
 install:
-	python -m pip install -e .
+	python -m pip install -e . nbdev
+	nbdev_install_hooks
