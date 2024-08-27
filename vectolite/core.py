@@ -55,12 +55,14 @@ class VectoLite:
         print(f"sqlite_version={sqlite_version}, vec_version={vec_version}")
     
     @property
-    def table_exists(self):
+    def table_exists(self) -> bool:
         """
         Checks if a table exists in the SQLite database.
 
-        Returns:
-            bool: True if the table exists, False otherwise.
+        Returns
+        -------
+        bool
+            True if the table exists, False otherwise.
         """
         return self.db.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.table_name}'").fetchone() is not None
 
@@ -69,8 +71,10 @@ class VectoLite:
         """
         Returns the number of rows in the specified table. Will also cache the number of rows internally when called.
 
-        Returns:
-            int: The number of rows in the table.
+        Returns
+        -------
+        int
+            The number of rows in the table.
         """
         if not self.rownums:
             self.rownums = self.db.execute(f"SELECT COUNT(*) FROM {self.table_name}").fetchone()[0]
@@ -80,11 +84,15 @@ class VectoLite:
         """
         Parses an item and returns its MD5 hash, serialized contents, and serialized vector.
 
-        Args:
-            item (dict): The item to parse.
+        Parameters
+        ----------
+            item 
+                The item to parse.
 
-        Returns:
-            tuple: A tuple containing the MD5 hash (str), serialized contents (str), and serialized vector (bytes).
+        Returns
+        -------
+            tuple
+                A tuple containing the MD5 hash (str), serialized contents (str), and serialized vector (bytes).
         """
         contents = orjson.dumps({k: v for k, v in item.items() if k != 'vector'})
         md5_hash = hashlib.md5(contents).hexdigest()
