@@ -60,7 +60,8 @@ class VectoLite:
         """
         return self.db.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.table_name}'").fetchone() is not None
 
-    def __len__(self):
+    @property
+    def table_len(self):
         """
         Returns the number of rows in the specified table. Will also cache the number of rows internally when called.
 
@@ -106,7 +107,7 @@ class VectoLite:
                     return
 
                 # Insert the item into the table
-                i = len(self) + 1
+                i = self.table_len + 1
                 self.db.execute(
                     f"INSERT INTO {self.table_name}(rowid, embedding) VALUES (?, ?)",
                     [i, serialize_f32(vector)],
