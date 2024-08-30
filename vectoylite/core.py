@@ -5,7 +5,7 @@
 # %% auto 0
 __all__ = ['serialize_f32', 'VectoyLite']
 
-# %% ../nbs/00_core.ipynb 2
+# %% ../nbs/00_core.ipynb 3
 from nbdev.showdoc import *
 from fastcore.basics import patch
 import json
@@ -24,7 +24,7 @@ def serialize_f32(vector: List[float]) -> bytes:
     """Serializes a list of floats into a compact "raw bytes" format."""
     return struct.pack("%sf" % len(vector), *vector)
 
-# %% ../nbs/00_core.ipynb 3
+# %% ../nbs/00_core.ipynb 4
 class VectoyLite:
     def __init__(self, path: str):
         """
