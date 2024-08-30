@@ -84,9 +84,7 @@ def print_version(self: VectoyLite):
 @patch
 def parse_item(self: VectoyLite, item: Dict):
     """
-    Parses an item and returns its MD5 hash, serialized contents, and vector.
-
-    This is mainly meant as an internal method, but there may be times when you want to confirm these manually.
+    Parses an item and returns its MD5 hash, serialized contents, and vector. This is mainly meant as an internal method, but there may be times when you want to confirm these manually.
 
     Parameters
     ----------
@@ -150,7 +148,8 @@ def query_idx(self: VectoyLite, query, k=5):
 
     Returns
     -------
-        tuple: A tuple containing the rowids and distances of the nearest neighbors.
+        tuple
+            A tuple containing the rowids and distances of the nearest neighbors.
     """
     results = self.db.execute(
         f"""
@@ -179,7 +178,8 @@ def query(self: VectoyLite, query, k=5):
 
     Returns
     -------
-        tuple: A tuple containing the inserted items and distances of the nearest neighbors.
+        tuple
+            A tuple containing the inserted items and distances of the nearest neighbors.
     """
     idxs, dists = self.query_idx(query, k)
     return [json.loads(self.cache[i].decode()) for i in idxs], dists
