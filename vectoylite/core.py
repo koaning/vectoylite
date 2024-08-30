@@ -114,7 +114,6 @@ def insert(self: VectoyLite, stream):
     with self.db:
         for item in stream:
             md5_hash, contents, vector = self.parse_item(item)
-            print(md5_hash, contents, vector)
     
             # Edge case: if the table does not exist, create it
             if not self.table_exists:
