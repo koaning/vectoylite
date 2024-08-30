@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "vectoylite",
+    "section": "",
+    "text": "The goal of this project is to offer a simple way to get started with SQLite-vec. With this project you can:\nIt also comes with some settings that you can turn on/off:",
+    "crumbs": [
+      "vectoylite"
+    ]
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "vectoylite",
+    "section": "Install",
+    "text": "Install\nIf that sounds interesting, you can install this project via pip.f\npip install vectoylite",
+    "crumbs": [
+      "vectoylite"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "vectoylite",
+    "section": "How to use",
+    "text": "How to use\n\nfrom vectoylite.core import VectoyLite\ndb = VectoyLite(\"another-demo\")\n\nBefore running anything it is good to observe that we are running modern versions of everything.\n\ndb.print_version()\n\nsqlite_version=3.46.1, vec_version=v0.1.1\n\n\n\nVectoLite uses pysqlite3 under the hood to install the most recent version of sqlite, which should be compatible with sqlite-vec right out of the box. There may be edge cases, but we have not hit our head sofar.\n\nNow that we have confirmed the version, lets move on to do some basic vector retreival.\n\n# Examples just for illustrative purposes. \nitems = [\n    {'i': 1, 'vector':[0.1, 0.1, 0.1, 0.1]},\n    {'i': 2, 'vector':[0.2, 0.2, 0.2, 0.2]},\n    {'i': 3, 'vector':[0.3, 0.3, 0.3, 0.3]},\n    {'i': 4, 'vector':[0.4, 0.4, 0.4, 0.4]},\n    {'i': 5, 'vector':[0.5, 0.5, 0.5, 0.5]},\n]\n\n# Query these examples\nquery = [0.3, 0.3, 0.3, 0.3]\ndb.insert(items)\n\n# View the output\nresults, distances = db.query(query, k=3)\nfor res, d in zip(results, distances):\n    print(res, d)\n\n{'i': 2} 0.0\n{'i': 3} 0.19999998807907104\n{'i': 1} 0.20000001788139343\n\n\nAt the moment of making this document there is no support for indexes just yet, but folks are working on that.",
+    "crumbs": [
+      "vectoylite"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nVectoyLite\n\n VectoyLite (path:str)\n\nInitializes the VectoLite instance with a connection to the SQLite database.\n\n\n\n\nType\nDetails\n\n\n\n\npath\nstr\nThe path to the SQLite database file.\n\n\n\n\nsource\n\n\nVectoyLite.print_version\n\n VectoyLite.print_version ()\n\nPrints the SQLite and SQLite-vec versions.\n\nVectoyLite(\"demo\").print_version()\n\nsqlite_version=3.46.1, vec_version=v0.1.1\n\n\n\nsource\n\n\nVectoyLite.parse_item\n\n VectoyLite.parse_item (item:Dict)\n\nParses an item and returns its MD5 hash, serialized contents, and vector. This is mainly meant as an internal method, but there may be times when you want to confirm these manually.\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nitem\nDict\nThe item to parse.\n\n\nReturns\ntuple\nA tuple containing the MD5 hash (str), serialized contents (str), and serialized vector (bytes).\n\n\n\n\nVectoyLite(\"demo\").parse_item({\"hello\": \"world\", \"vector\": [1, 2, 3]})\n\n('fbc24bcc7a1794758fc1327fcfebdaf6', b'{\"hello\":\"world\"}', [1, 2, 3])\n\n\n\nVectoyLite(\"demo\").parse_item({\"hello\": \"world!\", \"vector\": [1, 2, 3]})\n\n('a8af219242bb71a1c085ee0c7e16e322', b'{\"hello\":\"world!\"}', [1, 2, 3])\n\n\n\nsource\n\n\nVectoyLite.insert\n\n VectoyLite.insert (stream)\n\nInserts a stream of items into the specified table.\n\n\n\n\nType\nDetails\n\n\n\n\nstream\n\nAn iterable stream of dictionaries to insert.\n\n\n\n\nVectoyLite(\"demo\").insert([{\"hello\": \"world!\", \"vector\": [1, 2, 3, 4]}])\n\na8af219242bb71a1c085ee0c7e16e322 b'{\"hello\":\"world!\"}' [1, 2, 3, 4]\n\n\n\nsource\n\n\nVectoyLite.query_idx\n\n VectoyLite.query_idx (query, k=5)\n\nQueries the specified table for the nearest neighbors to the given query vector.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nquery\n\n\nThe query vector\n\n\nk\nint\n5\n\n\n\nReturns\ntuple\n\nA tuple containing the rowids and distances of the nearest neighbors.\n\n\n\n\nsource\n\n\nVectoyLite.query\n\n VectoyLite.query (query, k=5)\n\nQueries the specified table for the nearest neighbors to the given query vector.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nquery\n\n\nThe query vector\n\n\nk\nint\n5\n\n\n\nReturns\ntuple\n\nA tuple containing the inserted items and distances of the nearest neighbors.",
+    "crumbs": [
+      "core"
+    ]
+  }
+]
