@@ -68,3 +68,118 @@ class VectoyLite:
             True if the table exists, False otherwise.
         """
         return self.db.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.table_name}'").fetchone() is not None
+
+# %% ../nbs/00_core.ipynb 5
+@patch
+def print_version(self: VectoyLite):
+        """
+        Prints the SQLite and SQLite-vec versions.
+        """
+        sqlite_version, vec_version = self.db.execute(
+            "select sqlite_version(), vec_version()"
+        ).fetchone()
+        print(f"sqlite_version={sqlite_version}, vec_version={vec_version}")
+
+# %% ../nbs/00_core.ipynb 7
+@patch
+def parse_item(self: VectoyLite, item: Dict):
+    """
+    Parses an item and returns its MD5 hash, serialized contents, and vector.
+
+    This is mainly meant as an internal method, but there may be times when you want to confirm these manually.
+
+    Parameters
+    ----------
+        item 
+            The item to parse.
+
+    Returns
+    -------
+        tuple
+            A tuple containing the MD5 hash (str), serialized contents (str), and serialized vector (bytes).
+    """
+    contents = orjson.dumps({k: v for k, v in item.items() if k != 'vector'})
+    md5_hash = hashlib.md5(contents).hexdigest()
+    return md5_hash, contents, item['vector']
+
+# %% ../nbs/00_core.ipynb 10
+@patch
+def insert(self: VectoyLite, stream):
+    """
+    Inserts a stream of items into the specified table.
+
+    Parameters
+    ----------
+        stream
+            An iterable stream of dictionaries to insert.
+    """
+    with self.db:
+        for item in stream:
+            md5_hash, contents, vector = self.parse_item(item)
+            print(md5_hash, contents, vector)
+    
+            # Edge case: if the table does not exist, create it
+            if not self.table_exists:
+                self.db.execute(f"CREATE VIRTUAL TABLE {self.table_name} USING vec0(embedding float[{len(vector)}])")
+                self.rownums = 0
+
+            # If we have already inserted this item, no need to add again
+            if md5_hash in self.cache:
+                return
+
+            # Insert the item into the table
+            i = len(self) + 1
+            self.db.execute(
+                f"INSERT INTO {self.table_name}(rowid, embedding) VALUES (?, ?)",
+                [i, serialize_f32(vector)],
+            )
+            self.cache[i] = contents
+            self.cache[md5_hash] = i
+            self.rownums += 1
+
+# %% ../nbs/00_core.ipynb 12
+@patch
+def query_idx(self: VectoyLite, query, k=5):
+    """
+    Queries the specified table for the nearest neighbors to the given query vector.
+
+    Parameters
+    ----------
+        query
+            The query vector
+
+    Returns
+    -------
+        tuple: A tuple containing the rowids and distances of the nearest neighbors.
+    """
+    results = self.db.execute(
+        f"""
+          SELECT
+            rowid,
+            distance
+          FROM {self.table_name}
+          WHERE embedding MATCH ?
+          ORDER BY distance
+          LIMIT {k}
+        """,
+        [serialize_f32(query)],
+    ).fetchall()
+    return list(zip(*results))
+
+# %% ../nbs/00_core.ipynb 13
+@patch
+def query(self: VectoyLite, query, k=5):
+    """
+    Queries the specified table for the nearest neighbors to the given query vector.
+
+    Parameters
+    ----------
+        query
+            The query vector
+
+    Returns
+    -------
+        tuple: A tuple containing the inserted items and distances of the nearest neighbors.
+    """
+    idxs, dists = self.query_idx(query, k)
+    return [json.loads(self.cache[i].decode()) for i in idxs], dists
