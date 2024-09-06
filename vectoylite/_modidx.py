@@ -14,4 +14,5 @@ d = { 'settings': { 'branch': 'main',
                                  'vectoylite.core.VectoyLite.query': ('core.html#vectoylite.query', 'vectoylite/core.py'),
                                  'vectoylite.core.VectoyLite.query_idx': ('core.html#vectoylite.query_idx', 'vectoylite/core.py'),
                                  'vectoylite.core.VectoyLite.table_exists': ('core.html#vectoylite.table_exists', 'vectoylite/core.py'),
-                                 'vectoylite.core.serialize_f32': ('core.html#serialize_f32', 'vectoylite/core.py')}}}
+                                 'vectoylite.core.serialize_f32': ('core.html#serialize_f32', 'vectoylite/core.py')},
+            'vectoylite.more': {'vectoylite.more.demo': ('more.html#demo', 'vectoylite/more.py')}}}

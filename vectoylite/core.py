@@ -28,7 +28,7 @@ def serialize_f32(vector: List[float]) -> bytes:
 class VectoyLite:
     def __init__(self, path: str):
         """
-        Initializes the VectoLite instance with a connection to the SQLite database.
+        Initializes the VectoYYYYYYLite instance with a connection to the SQLite database.
 
         Parameters
         ----------
@@ -134,7 +134,7 @@ def insert(self: VectoyLite, stream):
             self.cache[md5_hash] = i
             self.rownums += 1
 
-# %% ../nbs/00_core.ipynb 12
+# %% ../nbs/00_core.ipynb 11
 @patch
 def query_idx(self: VectoyLite, query, k=5):
     """
@@ -164,7 +164,7 @@ def query_idx(self: VectoyLite, query, k=5):
     ).fetchall()
     return list(zip(*results))
 
-# %% ../nbs/00_core.ipynb 13
+# %% ../nbs/00_core.ipynb 12
 @patch
 def query(self: VectoyLite, query, k=5):
     """
